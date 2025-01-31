@@ -35,7 +35,7 @@ const Fetchtable = () => {
                 "name": values.name,
                 "email": values.email,
                 "password": values.password,
-                "avatar": values.avatar,
+                "avatar": "https://picsum.photos/800",
               }
               )
               .then((res) => {
@@ -90,6 +90,7 @@ const Fetchtable = () => {
                         <th>Id</th>
                         <th>Name</th>
                         <th>Email</th>
+                        <th>Password</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -99,6 +100,7 @@ const Fetchtable = () => {
                             <td>{v.id}</td>
                             <td>{v.name}</td>
                             <td>{v.email}</td>
+                            <td>{v.password}</td>
                             <td>
                                 <button className="btn btn-warning btn-sm mx-2">Edit</button>
                                 <button className="btn btn-danger btn-sm" >Delete</button>
