@@ -1,8 +1,9 @@
 // import { useFormik } from 'formik';
 import './App.css';
+import Exam from './Reactformik/Exam';
 // import Fake from './Fake';
 import Fetchtable from './Reactformik/Fetchtable';
-// import Reactformik from './Reactformik/Reactformik';
+import Reactformik from './Reactformik/Reactformik';
 // import * as Yup from 'yup';
 
 function App() {
@@ -74,6 +75,8 @@ function App() {
      {/* <Reactformik/> */}
       {/* <Fake/> */}
       <Fetchtable/> 
+
+      {/* <Exam/> */}
    
  
 

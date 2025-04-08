@@ -23,7 +23,7 @@ function Reactformik() {
                         <tr>
                             <td>Name</td>
                             <td>
-                                <input type="text" name='name' />
+                                <input type="text" name='name'placeholder='Enter Name'  />
                                
                             </td>
                         </tr>
@@ -41,7 +41,7 @@ function Reactformik() {
                                 
                             </td>
                         </tr>
-                        <tr>,
+                        <tr>
                            
                         </tr>
                     </tbody>
