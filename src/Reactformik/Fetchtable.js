@@ -8,7 +8,9 @@ const Fetchtable = () => {
 
     const [List, setList] = useState([]);
     const [selectedUser, setSelectedUser] = useState([]);
+    const [uid, setuid] = useState(null);
 
+    
 
     // fetch users on initial render 
     useEffect(() => {
@@ -20,7 +22,6 @@ const Fetchtable = () => {
             .then((res) => setList(res.data));
     }
 
-
     // Add new user to the list
     const formik = useFormik({
         initialValues: {
@@ -30,19 +31,82 @@ const Fetchtable = () => {
             avatar: 'https://www.google.com'
         },
         onSubmit: (values) => {
-            axios.post('https://api.escuelajs.co/api/v1/users', {
-                "name": values.name,
-                "email": values.email,
-                "password": values.password,
-                "avatar": values.avatar,
+            if (uid == null) {
+                axios.post('https://api.escuelajs.co/api/v1/users', {
+                    "name": values.name,
+                    "email": values.email,
+                    "password": values.password,
+                    "avatar": values.avatar,
+                }
+                )
+                    .then((res) => {
+                        getdata()
+                    });
             }
-            )
-                .then((res) => {
-                    getdata()
-                });
+            else {
+                axios.put(`https://api.escuelajs.co/api/v1/users/${uid}`, {
+                    name: values.name,
+                    email: values.email,
+                    password: values.password,
+                    avatar: values.avatar,
+                })
+                    .then((response) => {
+                        getdata();
+                    })
+                    .catch((error) => {
+                        console.error('Error updating user:', error);
+                    });
+                    setuid(null)
+            }
             formik.resetForm(); // Reset the form fields
         }
     });
+
+
+    // delete user
+    const deleteuser = (userId) => {
+        axios
+            .delete(`https://api.escuelajs.co/api/v1/users/${userId}`)
+            .then((response) => {
+                getdata();
+            })
+            .catch((error) => {
+                console.error('Error updating user:', error);
+            });
+    };
+
+
+    //   update user
+    const edituser = (userId) => {
+        const user = List.find((u) => u.id === userId);
+        if (user) {
+            formik.setValues({
+                name: user.name,
+                email: user.email,
+                password: user.password,
+                avatar: user.avatar,
+            });
+            setSelectedUser(user);
+        }
+        setuid(userId);
+    };
+
+    //   const updateUser = (userId, values) => {
+    //     axios
+    //       .put(`https://api.escuelajs.co/api/v1/users/${userId}`, {
+    //         name: values.name,
+    //         email: values.email,
+    //         password: values.password,
+    //         avatar: values.avatar,
+    //       })
+    //       .then((response) => {
+    //         getdata();
+    //         setSelectedUser(null); 
+    //       })
+    //       .catch((error) => {
+    //         console.error('Error updating user:', error);
+    //       });
+    //   };
 
     return (
         <>
@@ -70,7 +134,7 @@ const Fetchtable = () => {
                     </div> */}
 
                     <div className='text-center'>
-                        <button type="submit" className="btn btn-primary">Add User</button>
+                        <button type="submit" className="btn btn-primary">{uid === null ? 'Add User' : 'Edit User'}</button>
                     </div>
                 </form>
 
@@ -87,12 +151,12 @@ const Fetchtable = () => {
                     <tbody>
                         {List.map((v, i) => (
                             <tr key={i}>
-                                <td>{v.id}</td>
+                                <td>{i + 1}</td>
                                 <td>{v.name}</td>
                                 <td>{v.email}</td>
                                 <td>
-                                    <button className="btn btn-warning btn-sm mx-2">Edit</button>
-                                    <button className="btn btn-danger btn-sm" >Delete</button>
+                                    <button className="btn btn-warning btn-sm mx-2" onClick={() => edituser(v.id)}>Edit</button>
+                                    <button className="btn btn-danger btn-sm" onClick={() => deleteuser(v.id)} >Delete</button>
                                 </td>
                             </tr>
                         ))}
